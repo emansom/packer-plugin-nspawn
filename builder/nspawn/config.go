@@ -1,5 +1,6 @@
-//go:generate mapstructure-to-hcl2 -type Config
-package builder
+//go:generate packer-sdc mapstructure-to-hcl2 -type Config
+//go:generate packer-sdc struct-markdown
+package nspawn
 
 import (
 	"fmt"
