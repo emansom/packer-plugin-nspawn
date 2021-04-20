@@ -1,18 +1,66 @@
-# Packer builder for systemd-nspawn
-
+# Packer Plugin systemd-nspawn
 This plugin can build and provision systemd-nspawn containers. It can import or
 clone an existing base image, or generate one from scratch using debootstrap.
 
-## Quick Start
+## Installation
 
+### Using pre-built releases
+
+#### Using the `packer init` command
+
+Starting from version 1.7, Packer supports a new `packer init` command allowing
+automatic installation of Packer plugins. Read the
+[Packer documentation](https://www.packer.io/docs/commands/init) for more information.
+
+To install this plugin, copy and paste this code into your Packer configuration .
+Then, run [`packer init`](https://www.packer.io/docs/commands/init).
+
+```hcl
+packer {
+  required_plugins {
+    nspawn = {
+      version = ">= 1.2.4"
+      source  = "https://github.com/emansom/packer-plugin-nspawn"
+    }
+  }
+}
 ```
-sudo apt-get install --no-install-recommends \
- debootstrap golang-go libglib2.0-bin packer systemd-container zstd
-git clone https://git.sr.ht/~angdraug/packer-builder-nspawn
-cd packer-builder-nspawn
-go build
-packer build -only='*.base' .
-```
+
+
+#### Manual installation
+
+You can find pre-built binary releases of the plugin [here](https://github.com/emansom/packer-plugin-nspawn/releases).
+Once you have downloaded the latest archive corresponding to your target OS,
+uncompress it to retrieve the plugin binary file corresponding to your platform.
+To install the plugin, please follow the Packer documentation on
+[installing a plugin](https://www.packer.io/docs/extending/plugins/#installing-plugins).
+
+
+### From Sources
+
+If you prefer to build the plugin from sources, clone the GitHub repository
+locally and run the command `go build` from the root
+directory. Upon successful compilation, a `packer-plugin-ansible` plugin
+binary file can be found in the root directory.
+To install the compiled plugin, please follow the official Packer documentation
+on [installing a plugin](https://www.packer.io/docs/extending/plugins/#installing-plugins).
+
+
+### Configuration
+
+For more information on how to configure the plugin, please read the
+documentation located in the [`docs/`](docs) directory.
+
+
+## Contributing
+
+* If you think you've found a bug in the code or you have a question regarding
+  the usage of this software, please reach out to us by opening an issue in
+  this GitHub repository.
+* Contributions to this project are welcome: if you want to add a feature or a
+  fix a bug, please do so by opening a Pull Request in this GitHub repository.
+  In case of feature contribution, we kindly ask you to open an issue to
+  discuss it beforehand.
 
 ## Setup
 
@@ -83,51 +131,6 @@ to reset chroot file ownership before archiving the image:
 ```
 systemd-nspawn ... --private-users=0 --private-users-chown
 ```
-
-## Configuration
-
-All configuration options for this plugin are optional.
-
-- `name` - Standard Packer build name parameter. The default is the builder
-  name `nspawn`. This will be used as container name and will be configured as
-  the hostname within the container.
-
-- `import` - Import container image from a URL, file, or a directory tree, in a
-  format recognized by `import-*` and `pull-*` commands of
-  [machinectl(1)](https://www.freedesktop.org/software/systemd/man/machinectl.html).
-
-- `clone` - Name of a local container to clone. When neither `import` nor
-  `clone` options are set, a new image will be created with
-  [debootstrap(8)](https://manpages.debian.org/unstable/debootstrap/debootstrap.8.en.html).
-
-- `suite` - Distribution release code name as recognized by
-  [debootstrap(8)](https://manpages.debian.org/unstable/debootstrap/debootstrap.8.en.html).
-  The default is `unstable`.
-
-- `mirror` - URL for the distribution mirror. The default is
-  [https://deb.debian.org/debian](https://deb.debian.org/debian).
-
-- `variant` - The bootstrap script variant as recognized by
-  [debootstrap(8)](https://manpages.debian.org/unstable/debootstrap/debootstrap.8.en.html).
-  The default is to not pass `--variant` to debootstrap, which will install
-  required and important packages. The `minbase` variant will only install
-  required packages, the plugin explicitly adds several small important
-  packages to make sure that even a `minbase` image has the CLI tools likely to
-  be used in most provisioning scripts.
-
-- `cache_dir` - Absolute path to a directory where .deb files will be cached.
-  The default is the host's APT cache at `/var/cache/apt/archives`.
-
-- `machines_dir` - Absolute path to the directory where systemd-nspawn expects
-  to find the container chroots. Unless you know what you're doing, keep the
-  default `/var/lib/machines`.
-
-- `timeout` - The timeout in seconds to wait for container startup and
-  shutdown. The default is 20 seconds.
-
-See [nspawn.pkr.hcl](nspawn.pkr.hcl) for an example of how to build a minimal
-base container, archive it into a tarball, clone it a new container, and import
-a container image from the archived tarball.
 
 ## Copying
 
