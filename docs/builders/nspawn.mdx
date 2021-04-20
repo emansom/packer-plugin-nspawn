@@ -1,0 +1,76 @@
+---
+description: >
+  The scaffolding builder is used to create endless Packer plugins using
+  a consistent plugin structure.
+page_title: Scaffolding - Builders
+nav_title: Scaffolding
+---
+
+# systemd-nspawn
+
+Type: `nspawn`
+
+This plugin can build and provision systemd-nspawn containers. It can import or
+clone an existing base image, or generate one from scratch using debootstrap.
+
+## Basic Example
+
+```hcl
+ source "scaffolding" "example" {
+   mock = "bird"
+ }
+
+ build {
+   sources = ["source.scaffolding.example"]
+ }
+```
+
+## Configuration Reference
+
+Required Parameters:
+
+@include 'builder/nspawn/Config-required.mdx'
+
+Optional Parameters:
+
+@include 'builder/nspawn/Config-not-required.mdx'
+
+@include 'builders/common-config.mdx'
+
+- `import` (string) - Import container image from a URL, file, or a directory tree, in a
+  format recognized by import-* and pull-* commands of machinectl(1).
+
+- `clone` (string) - Name of a local container to clone. When neither import nor clone
+  options are set, a new image will be created with debootstrap(8).
+
+- `suite` (string) - Distribution release code name as recognized by debootstrap(8).
+  The default is `unstable`.
+
+- `mirror` (string) - URL for the distribution mirror.
+  The default is https://deb.debian.org/debian.
+
+- `cache_dir` (string) - Absolute path to a directory where .deb files will be cached.
+  The default is the host's APT cache at `/var/cache/apt/archives`.
+
+- `machines_dir` (string) - Absolute path to the directory where systemd-nspawn expects to find
+  the container chroots. The default is `/var/lib/machines`.
+
+- `variant` (string) - The bootstrap script variant as recognized by debootstrap(8).
+
+- `timeout` (duration string | ex: "1h5m2s") - The timeout in seconds to wait for the container to start.
+  The default is 20 seconds.
+
+### Example Usage
+
+
+```hcl
+ source "scaffolding" "example" {
+   mock = "bird"
+ }
+
+ build {
+   sources = ["source.scaffolding.example"]
+ }
+```
+
+
