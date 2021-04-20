@@ -7,12 +7,12 @@ import (
 	"github.com/hashicorp/packer-plugin-sdk/plugin"
 	"github.com/hashicorp/packer-plugin-sdk/version"
 
-	"github.com/emansom/packer-plugin-nspawn/builder"
+	"github.com/emansom/packer-plugin-nspawn/builder/nspawn"
 )
 
 var (
 	// Version is the main version number that is being run at the moment.
-	Version = "1.2.3"
+	Version = "1.2.4"
 
 	// VersionPrerelease is A pre-release marker for the Version. If this is ""
 	// (empty string) then it means that it is a final release. Otherwise, this
@@ -26,7 +26,7 @@ var (
 
 func main() {
 	pps := plugin.NewSet()
-	pps.RegisterBuilder("systemd-nspawn", new(builder.Builder))
+	pps.RegisterBuilder("nspawn", new(nspawn.Builder))
 	pps.SetVersion(PluginVersion)
 	err := pps.Run()
 	if err != nil {
