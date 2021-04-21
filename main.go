@@ -12,7 +12,7 @@ import (
 
 var (
 	// Version is the main version number that is being run at the moment.
-	Version = "1.2.4"
+	Version = "1.2.5"
 
 	// VersionPrerelease is A pre-release marker for the Version. If this is ""
 	// (empty string) then it means that it is a final release. Otherwise, this
@@ -26,7 +26,7 @@ var (
 
 func main() {
 	pps := plugin.NewSet()
-	pps.RegisterBuilder("nspawn", new(nspawn.Builder))
+	pps.RegisterBuilder(plugin.DEFAULT_NAME, new(nspawn.Builder))
 	pps.SetVersion(PluginVersion)
 	err := pps.Run()
 	if err != nil {
