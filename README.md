@@ -20,7 +20,7 @@ packer {
   required_plugins {
     nspawn = {
       version = ">= 1.2.4"
-      source  = "https://github.com/emansom/packer-plugin-nspawn"
+      source  = "github.com/emansom/nspawn"
     }
   }
 }
